@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+function ClientList() {
+  const [clients, setClients] = useState([
+    { id: 1, name: 'John Smith' },
+    { id: 2, name: 'Jane Doe' },
+    { id: 3, name: 'Bob Johnson' },
+  ]);
+
+  const addClient = (name) => {
+    setClients([...clients, { id: clients.length + 1, name }]);
+  };
+
+  const updateClient = (id, name) => {
+    setClients(
+      clients.map((client) => (client.id === id ? { ...client, name } : client))
+    );
+  };
+
+  const deleteClient = (id) => {
+    setClients(clients.filter((client) => client.id !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Client List</h1>
+      <ul>
+        {clients.map((client) => (
+          <li key={client.id}>
+            {client.name}{' '}
+            <button onClick={() => updateClient(client.id, 'Updated Name')}>
+              Update
+            </button>{' '}
+            <button onClick={() => deleteClient(client.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      <button onClick={() => addClient('New Client')}>Add Client</button>
     </div>
   );
 }
 
-export default App;
+export default ClientList;
